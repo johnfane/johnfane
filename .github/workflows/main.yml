@@ -1,0 +1,29 @@
+# This is a basic workflow to help you get started with Actions
+
+name: MergedEmail
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+
+  schedule:
+  - cron: "0 0 * * 1-5
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Fetch all merges since last mid-night
+        run: today=date +%Y-%m-%d
+        run: git log --merges --since=$today > merges.txt
+        run: cat messages
