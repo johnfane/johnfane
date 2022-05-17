@@ -25,9 +25,8 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Fetch all merges since last mid-night
-        run: today=$(date +%Y-%m-%d)
-
-      -  run: |
+        run: |
+          today=$(date +%Y-%m-%d)
           git log --merges --since=$today > merges.txt
 
-      -  run: cat messages
+      -  run: cat merges.txt
