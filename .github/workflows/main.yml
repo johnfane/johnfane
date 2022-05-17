@@ -27,6 +27,5 @@ jobs:
       - name: Fetch all merges since last mid-night
         run: |
           today=$(date +%Y-%m-%d)
-          git log --merges --since=$today > merges.txt
-
-      -  run: cat merges.txt
+          git log --merges --since=$today > messageabc
+          cat messageabc
