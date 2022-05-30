@@ -29,7 +29,7 @@ jobs:
 
       - name: Fetch all merges to branch since last mid-night
         run: |
-          git log --merges --since="1 day" > message.txt
+          git log > message.txt
           tosend=$(cat message.txt)
           
       - name: directsns
