@@ -43,7 +43,7 @@ jobs:
       - name: Publish merges to SNS Topic
         uses: nothingalike/sns-publish-topic@v1.6
         with:
-          MESSAGE: "$(cat message.txt)"
+          MESSAGE: "$tosend"
           TOPIC_ARN: "arn:aws:sns:us-east-1:303278963359:testing-jf"
 
         env:
