@@ -53,12 +53,12 @@ jobs:
 
       - name: Fetch all merges to branch since last mid-night
         run: |
-          git log --merges --since="1 day" > message
+          git log --merges --since="1 day" > message.txt
 
       - name: Publish merges to SNS Topic
         uses: nothingalike/sns-publish-topic@v1.6
         with:
-          MESSAGE: $(cat message)
+          MESSAGE: file://message.txt
           TOPIC_ARN: "arn:aws:sns:us-east-1:303278963359:testing-jf"
 
         env:
