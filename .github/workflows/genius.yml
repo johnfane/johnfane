@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: sendsns
         run: |
-          aws sns publish --topic-arn "arn:aws:sns:us-east-1:303278963359:testing-jf"" --message '{"name":"John", "location":"Ontario"}' --region us-east-1
+          aws sns publish --topic-arn "arn:aws:sns:us-east-1:303278963359:testing-jf" --message '{"name":"John", "location":"Ontario"}' --region us-east-1
         env:
           AWS_REGION: 'us-east-1'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
