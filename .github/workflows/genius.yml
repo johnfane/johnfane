@@ -23,20 +23,6 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-#      - name: install AWS CLI
-#        run: |
-#          curl -L -o install-aws.sh https://raw.githubusercontent.com/unfor19/install-aws-cli-action/master/entrypoint.sh && \
-#          chmod +x install-aws.sh
-#          ./install-aws.sh "v2" "amd64"
-#          rm install-aws.sh
-
-#       - name: install AWS CLI
-#         id: install-aws-cli
-#         uses: unfor19/install-aws-cli-action@v1.0.3
-#         with:
-#           version: 2     # default
-#           verbose: false # default
-#           arch: amd64    # allowed values: amd64, arm64
           
       - name: clone repo
         uses: actions/checkout@v3
@@ -45,24 +31,21 @@ jobs:
         run: |
           git log --merges --since="1 day" > message.txt
           tosend=$(cat message.txt)
-
+          
+      - name: directsns
+        run: |
+          aws sns publish --topic-arn "arn:aws:sns:us-east-1:303278963359:testing-jf" --message file://message.txt --region us-east-1
+        env:
+          AWS_REGION: 'us-east-1'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          
       - name: Publish merges to SNS Topic
         uses: nothingalike/sns-publish-topic@v1.6
         with:
           MESSAGE: $(git log --merges --since="1 day")
           TOPIC_ARN: "arn:aws:sns:us-east-1:303278963359:testing-jf"
 
-        env:
-          AWS_REGION: 'us-east-1'
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-  directsns:
-    runs-on: ubuntu-latest
-    steps:
-      - name: sendsns
-        run: |
-          aws sns publish --topic-arn "arn:aws:sns:us-east-1:303278963359:testing-jf" --message file://message.txt --region us-east-1
         env:
           AWS_REGION: 'us-east-1'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
