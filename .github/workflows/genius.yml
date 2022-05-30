@@ -24,13 +24,21 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+#      - name: install AWS CLI
+#        run: |
+#          curl -L -o install-aws.sh https://raw.githubusercontent.com/unfor19/install-aws-cli-action/master/entrypoint.sh && \
+#          chmod +x install-aws.sh
+#          ./install-aws.sh "v2" "amd64"
+#          rm install-aws.sh
+
       - name: install AWS CLI
-        run: |
-          curl -L -o install-aws.sh https://raw.githubusercontent.com/unfor19/install-aws-cli-action/master/entrypoint.sh && \
-          chmod +x install-aws.sh
-          ./install-aws.sh "v2" "amd64"
-          rm install-aws.sh
-  
+        id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1.0.3
+        with:
+          version: 2     # default
+          verbose: false # default
+          arch: amd64    # allowed values: amd64, arm64
+          
       - name: clone repo
         uses: actions/checkout@v3
 
