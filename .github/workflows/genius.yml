@@ -20,16 +20,6 @@ on:
         default: 'DoctorGenius'
 
 jobs:
-  sendsns:
-    runs-on: ubuntu-latest
-    steps:
-      - name: sendsns
-        run: |
-          aws sns publish --topic-arn "arn:aws:sns:us-east-1:303278963359:testing-jf" --message '{"name":"John", "location":"Ontario"}' --region us-east-1
-        env:
-          AWS_REGION: 'us-east-1'
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   notify:
     runs-on: ubuntu-latest
     steps:
@@ -54,13 +44,25 @@ jobs:
       - name: Fetch all merges to branch since last mid-night
         run: |
           git log --merges --since="1 day" > message.txt
+          tosend=$(cat message.txt)
 
       - name: Publish merges to SNS Topic
         uses: nothingalike/sns-publish-topic@v1.6
         with:
-          MESSAGE: file://message.txt
+          MESSAGE: $(git log --merges --since="1 day")
           TOPIC_ARN: "arn:aws:sns:us-east-1:303278963359:testing-jf"
 
+        env:
+          AWS_REGION: 'us-east-1'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  directsns:
+    runs-on: ubuntu-latest
+    steps:
+      - name: sendsns
+        run: |
+          aws sns publish --topic-arn "arn:aws:sns:us-east-1:303278963359:testing-jf" --message file://message.txt --region us-east-1
         env:
           AWS_REGION: 'us-east-1'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
