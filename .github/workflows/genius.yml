@@ -20,16 +20,16 @@ on:
         default: 'DoctorGenius'
 
 jobs:
-  sendsns:
-    runs-on: ubuntu-latest
-    steps:
-      - name: sendsns
-        run: |
-          aws sns publish --topic-arn "arn:aws:sns:us-east-1:303278963359:testing-jf" --message '{"name":"John", "location":"Ontario"}' --region us-east-1
-        env:
-          AWS_REGION: 'us-east-1'
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#   sendsns:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: sendsns
+#         run: |
+#           aws sns publish --topic-arn "arn:aws:sns:us-east-1:303278963359:testing-jf" --message '{"name":"John", "location":"Ontario"}' --region us-east-1
+#         env:
+#           AWS_REGION: 'us-east-1'
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   notify:
     runs-on: ubuntu-latest
     steps:
@@ -40,13 +40,13 @@ jobs:
 #          ./install-aws.sh "v2" "amd64"
 #          rm install-aws.sh
 
-      - name: install AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1.0.3
-        with:
-          version: 2     # default
-          verbose: false # default
-          arch: amd64    # allowed values: amd64, arm64
+#       - name: install AWS CLI
+#         id: install-aws-cli
+#         uses: unfor19/install-aws-cli-action@v1.0.3
+#         with:
+#           version: 2     # default
+#           verbose: false # default
+#           arch: amd64    # allowed values: amd64, arm64
           
       - name: clone repo
         uses: actions/checkout@v3
