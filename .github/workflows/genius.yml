@@ -30,7 +30,7 @@ jobs:
       - name: Fetch all merges to branch since last mid-night
         run: |
           git log > message.txt
-          tosend=$(cat message.txt)
+          TOSEND=$(cat message.txt)
           
 #       - name: directsns
 #         run: |
@@ -43,7 +43,7 @@ jobs:
       - name: Publish merges to SNS Topic
         uses: nothingalike/sns-publish-topic@v1.6
         with:
-          MESSAGE: "${tosend}"
+          MESSAGE: "${{ TOSEND }}"
           TOPIC_ARN: "arn:aws:sns:us-east-1:303278963359:testing-jf"
 
         env:
